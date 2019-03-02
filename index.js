@@ -20,14 +20,24 @@ app.use(bodyParser.json())
 app.use(poweredByHandler)
 
 // --- SNAKE LOGIC GOES BELOW THIS LINE ---
-
+var board = { x: 0, y: 0 }
+var head = {}
 // Handle POST request to '/start'
 app.post('/start', (request, response) => {
   // NOTE: Do something here to start the game
+  board['y'] = request.body.board.height - 1
+  board['x'] = request.body.board.width - 1
+
+  head = request.body.you.body[0]
+
+  console.log('START response', board, head)
+
 
   // Response data
   const data = {
-    color: '#DFFF00',
+    "color": "#B22222",
+    "headType": "bendr",
+    "tailType": "bolt"
   }
 
   return response.json(data)
@@ -37,12 +47,50 @@ app.post('/start', (request, response) => {
 app.post('/move', (request, response) => {
   // NOTE: Do something here to generate your move
 
-  // Response data
-  const data = {
-    move: 'up', // one of: ['up','down','left','right']
+  head = request.body.you.body[0]
+
+  console.log('START response', board, head)
+
+  var data = ["up", "down", "right", "left"]
+
+  if (head.x == board.x) {
+    data = data.filter(move => "right");
+    console.log("You are at the RIGHT wall")
   }
 
-  return response.json(data)
+  if (head.x == 0) {
+    data = data.filter(move => "left");
+    console.log("You are at the LEFT wall")
+  }
+
+  if (head.y == board.y) {
+    data = data.filter(move => "down");
+    console.log("You are at the BOTTOM wall")
+  }
+
+  if (head.y == 0) {
+    data = data.filter(move => "up");
+    console.log("You are at the TOP wall")
+  }
+
+
+  var moveMe = '';
+  // // Response data
+  // const data = {
+  //   move: 'up', // one of: ['up','down','left','right']
+  // }
+
+  for (var i = 0; i < data.length; i++) {
+    moveMe = data[getRandomInt(data.length)]
+  }
+
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  console.log("moveMe", { move: moveMe })
+
+  return response.json(moveMe)
 })
 
 app.post('/end', (request, response) => {
