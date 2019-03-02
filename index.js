@@ -76,19 +76,18 @@ app.post('/move', (request, response) => {
 
   var moveMe = '';
   // // Response data
-  // const data = {
-  //   move: 'up', // one of: ['up','down','left','right']
-  // }
+  const ra = {
+    move: 'right', // one of: ['up','down','left','right']
+  }
 
   for (var i = 0; i < data.length; i++) {
-    moveMe = data[getRandomInt(data.length)]
+    moveMe = { move: data[getRandomInt(data.length)] }
   }
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  console.log("moveMe", { move: moveMe })
 
   return response.json(moveMe)
 })
