@@ -54,34 +54,30 @@ app.post('/move', (request, response) => {
   var data = ["up", "down", "right", "left"]
 
   if (head.x == board.x) {
-    data = data.filter(move => "right");
+    data = data.filter(move => move != "right");
     console.log("You are at the RIGHT wall")
   }
 
   if (head.x == 0) {
-    data = data.filter(move => "left");
+    data = data.filter(move => move != "left");
     console.log("You are at the LEFT wall")
   }
 
   if (head.y == board.y) {
-    data = data.filter(move => "down");
+    data = data.filter(move => move != "down");
     console.log("You are at the BOTTOM wall")
   }
 
   if (head.y == 0) {
-    data = data.filter(move => "up");
+    data = data.filter(move => move != "up");
     console.log("You are at the TOP wall")
   }
 
 
-  var moveMe = '';
-  // // Response data
-  const ra = {
-    move: 'right', // one of: ['up','down','left','right']
-  }
-
+  var moveMe = { move: '' };
+  console.log('DATA', data)
   for (var i = 0; i < data.length; i++) {
-    moveMe = { move: data[getRandomInt(data.length)] }
+    moveMe.move = data[getRandomInt(data.length)]
   }
 
   function getRandomInt(max) {
