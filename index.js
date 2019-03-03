@@ -48,6 +48,9 @@ app.post('/move', (request, response) => {
   // NOTE: Do something here to generate your move
 
   head = request.body.you.body[0]
+  body = request.body.you.body
+  console.log('BODY1', body)
+
 
   console.log('START response', board, head)
 
@@ -72,6 +75,47 @@ app.post('/move', (request, response) => {
     data = data.filter(move => move != "up");
     console.log("You are at the TOP wall")
   }
+
+
+  var possibleMoves = [
+    { name: 'right', x: head.x + 1, y: head.y },
+    { name: 'left', x: head.x - 1, y: head.y },
+    { name: 'up', x: head.x, y: head.y - 1 },
+    { name: 'down', x: head.x, y: head.y + 1 }
+  ]
+
+  console.log('Possible Moves', possibleMoves)
+
+  for (var i = 0; i < body.length; i++) {
+
+    if (body[i].x == head.x + 1 && body[i].y == head.y) {
+      data = data.filter(move => move != "right");
+      console.log('REALLY DONT GO RIGHT')
+    }
+
+    if (body[i].x == head.x - 1 && body[i].y == head.y) {
+      data = data.filter(move => move != "left");
+
+      console.log('REALLY DONT GO LEFT')
+    }
+
+    if (body[i].x == head.x && body[i].y == head.y - 1) {
+      data = data.filter(move => move != "down");
+
+      console.log('REALLY DONT GO UP')
+    }
+
+    if (body[i].x == head.x && body[i].y == head.y + 1) {
+      data = data.filter(move => move != "up");
+
+      console.log('REALLY DONT GO DOWN')
+    }
+
+
+    console.log('COMPARE', body[i], head)
+  }
+  console.log('HEAD', head)
+
 
 
   var moveMe = { move: '' };
